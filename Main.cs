@@ -82,20 +82,28 @@ namespace Parking
         // Busca vehículos por matrícula
         private void btnMatricula_Click(object sender, EventArgs e)
         {
-            var db = new ParkingEntities();
-            var vehiculos = db.Vehiculos
-                .Include("TiposVehiculo").Where(v => v.Matricula.Contains(txtBuscar.Text))
-                .Select(vehiculo => new
-                {
-                    vehiculo.Id,
-                    vehiculo.Matricula,
-                    vehiculo.Marca,
-                    vehiculo.Modelo,
-                    TipoVehiculo = vehiculo.TiposVehiculo.Nombre
-                })
-                .ToList();
+           var matricula = txtBuscar.Text.ToUpper();
+            try
+            {
+                var db = new ParkingEntities();
+                var vehiculos = db.Vehiculos
+                    .Include("TiposVehiculo").Where(v => v.Matricula.Contains(matricula))
+                    .Select(vehiculo => new
+                    {
+                        vehiculo.Id,
+                        vehiculo.Matricula,
+                        vehiculo.Marca,
+                        vehiculo.Modelo,
+                        TipoVehiculo = vehiculo.TiposVehiculo.Nombre
+                    })
+                    .ToList();
 
-            dgvVehiculos.DataSource = vehiculos;
+                dgvVehiculos.DataSource = vehiculos;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar los vehículos: " + ex.Message);
+            }
         }
 
         // Restaura la vista completa de vehículos

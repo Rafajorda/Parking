@@ -106,20 +106,20 @@ namespace Parking
             // comentados porque la base de datos dice que pueden ser null pero estan por si acaso
 
             //// Validación: La marca no puede estar vacía
-            //if (string.IsNullOrWhiteSpace(txtMarca.Text))
-            //{
-            //    MessageBox.Show("La marca no puede estar vacía.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    txtMarca.Focus();
-            //    return;
-            //}
+            if (string.IsNullOrWhiteSpace(txtMarca.Text))
+            {
+                MessageBox.Show("La marca no puede estar vacía.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMarca.Focus();
+                return;
+            }
 
             //// Validación: El modelo no puede estar vacío
-            //if (string.IsNullOrWhiteSpace(txtModelo.Text))
-            //{
-            //    MessageBox.Show("El modelo no puede estar vacío.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    txtModelo.Focus();
-            //    return;
-            //}
+            if (string.IsNullOrWhiteSpace(txtModelo.Text))
+            {
+                MessageBox.Show("El modelo no puede estar vacío.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtModelo.Focus();
+                return;
+            }
 
 
             // Validación: Debe seleccionar un tipo de vehículo
@@ -140,7 +140,8 @@ namespace Parking
                         var vehiculo = db.Vehiculos.Find(selectedVehicleId);
                         if (vehiculo != null)
                         {
-                            vehiculo.Matricula = txtMatricula.Text;
+                            var matricula = txtMatricula.Text.ToUpper();
+                            vehiculo.Matricula = matricula;
                             vehiculo.Marca = txtMarca.Text;
                             vehiculo.Modelo = txtModelo.Text;
                             vehiculo.TipoVehiculoId = (int)cmbTipo.SelectedValue;
@@ -156,9 +157,11 @@ namespace Parking
                     // Modo agregar: crea un nuevo vehículo
                     else
                     {
+                        var matricula = txtMatricula.Text.ToUpper();
+
                         var vehiculo = new Vehiculos
                         {
-                            Matricula = txtMatricula.Text,
+                            Matricula = matricula,
                             Marca = txtMarca.Text,
                             Modelo = txtModelo.Text,
                             TipoVehiculoId = (int)cmbTipo.SelectedValue
